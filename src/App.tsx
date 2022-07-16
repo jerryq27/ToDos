@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import TodoForm from './components/TodoForm';
+import React, { useState } from "react";
+import TodoForm from "./components/TodoForm";
 
 function App() {
   let [todos, setTodos] = useState<Array<string>>([
-    'Learn React',
-    'Create Todo app',
-    'Learn TypeScript',
+    "Learn React",
+    "Create Todo app",
+    "Learn TypeScript",
   ]);
 
   return (
