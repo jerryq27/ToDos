@@ -1,23 +1,14 @@
-import React from "react";
 import TodoForm from "./components/TodoForm";
-import { useAppContext, useAppUpdateContext } from "./context/AppContext";
+import TodoList from "./components/TodoList";
+import { AppContextProvider } from "./context/AppContext";
 
 function App() {
-
-  const appState = useAppContext();
-  const setAppState = useAppUpdateContext();
-
-
-  return (
-    <div>
-      <ul>
-        {appState.todos.map((todo: string) => {
-          return <li key={todo}>{todo}</li>
-        })}
-      </ul>
-      <TodoForm />
-    </div>
-  );
+    return (
+        <AppContextProvider>
+            <TodoList />
+            <TodoForm />
+        </AppContextProvider>
+    );
 }
 
 export default App;
