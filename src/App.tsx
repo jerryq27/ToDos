@@ -15,7 +15,7 @@ function App() {
           return <li key={todo}>{todo}</li>
         })}
       </ul>
-      <TodoForm handleClick={()=>console.log('click!')}/>
+      <TodoForm />
     </div>
   );
 }
