@@ -1,36 +1,29 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, PropsWithChildren, useState } from "react";
 
-let initialState = {
-    todos: [
-        "Learn React",
-        "Create Todo app",
-        "Learn TypeScript",
-    ]
-};
-const updateState = (update: typeof initialState) => {
-    initialState = {...initialState, ...update};
+export interface AppContextType {
+    todos: TodoType[];
+    addTodo: (todo: TodoType) => void;
+}
+export interface TodoType {
+    todo: string;
 }
 
+export const AppContext = createContext<AppContextType>({} as AppContextType);
 
-const AppContext = createContext(initialState);
-const AppUpdateContext = createContext(updateState);
+export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
+    const [todos, setTodos] = useState<TodoType[]>([
+        { todo: "Learn React" },
+        { todo: "Create Todo app" },
+        { todo: "Learn TypeScript" },
+    ]);
 
-// Custom hooks for a cleaner implementation.
+    const addTodo = (todo: TodoType) => {
+        setTodos([...todos, todo]);
+    }
 
-export const useAppContext = () => useContext(AppContext);
-export const useAppUpdateContext = () => useContext(AppUpdateContext);
-
-interface AppContextProps {
-    children: React.ReactNode;
-}
-
-export const AppContextProvider = ({ children }: AppContextProps) => {
-    // const [appState, setAppState] = useState<typeof initialState>(initialState);
     return (
-        <AppContext.Provider value={initialState}>
-            <AppUpdateContext.Provider value={updateState}>
-                { children }
-            </AppUpdateContext.Provider>
+        <AppContext.Provider value={{ todos, addTodo }}>
+            {children}
         </AppContext.Provider>
     );
 }
