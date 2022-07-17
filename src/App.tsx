@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import TodoForm from "./components/TodoForm";
+import { useAppContext, useAppUpdateContext } from "./context/AppContext";
 
 function App() {
-  let [todos, setTodos] = useState<Array<string>>([
-    "Learn React",
-    "Create Todo app",
-    "Learn TypeScript",
-  ]);
+
+  const appState = useAppContext();
+  const setAppState = useAppUpdateContext();
+
 
   return (
     <div>
       <ul>
-        {todos.map((todo: string) => {
+        {appState.todos.map((todo: string) => {
           return <li key={todo}>{todo}</li>
         })}
       </ul>
-      <TodoForm />
+      <TodoForm handleClick={()=>console.log('click!')}/>
     </div>
   );
 }
