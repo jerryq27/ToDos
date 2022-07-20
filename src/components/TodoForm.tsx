@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
+import { Button } from "@mui/material";
 
 const TodoForm = () => {
     const { addTodo } = useContext(AppContext);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = () => {
         // Prevent the browser from refreshing.
-        event.preventDefault();
+        // event.preventDefault();
 
         let newTodo = (document.getElementById("todo-text") as HTMLInputElement).value;
         if (newTodo) {
@@ -27,7 +28,7 @@ const TodoForm = () => {
             <div>
                 <input id="todo-text" name="todo-text" type="text" />
             </div>
-            <button>Add Todo</button>
+            <Button variant="contained" onClick={handleSubmit}>Add Todo</Button>
         </form>
     );
 }
