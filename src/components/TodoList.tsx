@@ -11,11 +11,19 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 
-
 const TodoList = () => {
-    const [checked, setChecked] = useState([0]);
-
     const { todos } = useContext(AppContext);
+
+    const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
+
+    const handleCheck = (todo: TodoType) => {
+        const clickedIndex = todos.indexOf(todo);
+
+        const newCheckedVal = [...checked];
+        newCheckedVal[clickedIndex] = !newCheckedVal[clickedIndex];
+
+        setChecked(newCheckedVal);
+    }
 
     return (
         <List>
@@ -23,15 +31,16 @@ const TodoList = () => {
                 return (
                     <ListItem
                         key={t.todo}
+                        disablePadding
                         secondaryAction={
                             <IconButton edge="end">
                                 <EditIcon />
                             </IconButton>
                         }>
-                        <ListItemIcon>
+                        <ListItemIcon onClick={() => handleCheck(t)}>
                             <Checkbox
                                 edge="start"
-                                checked={false}
+                                checked={checked[(todos.indexOf(t))]}
                                 tabIndex={-1} />
                         </ListItemIcon>
 
