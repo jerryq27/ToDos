@@ -1,19 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import { Button } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 
 const TodoForm = () => {
     const { addTodo } = useContext(AppContext);
 
-    const handleSubmit = () => {
-        // Prevent the browser from refreshing.
-        // event.preventDefault();
+    const [input, setInput] = useState("");
 
-        let newTodo = (document.getElementById("todo-text") as HTMLInputElement).value;
-        if (newTodo) {
-            addTodo({ todo: newTodo });
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(event.target.value);
+    }
+
+    const handleSubmit = () => {
+        if (input) {
+            addTodo({ todo: input });
             // Clear the text field.
-            (document.getElementById("todo-text") as HTMLInputElement).value = "";
+            setInput('');
         }
         else {
             alert("Must submit a value.");
@@ -21,15 +23,29 @@ const TodoForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="todo-text">Todo</label>
-            </div>
-            <div>
-                <input id="todo-text" name="todo-text" type="text" />
-            </div>
-            <Button variant="contained" onClick={handleSubmit}>Add Todo</Button>
-        </form>
+        <Grid container
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-end"
+            style={{ padding: 10 }}>
+            <Grid item xs={10}>
+                <TextField
+                    label="New Todo"
+                    placeholder="Enter new todo"
+                    value={input}
+                    onChange={handleInputChange}
+                    fullWidth />
+            </Grid>
+            <Grid item xs={2}>
+                <Button
+                    style={{ margin: 'auto 0 auto' }}
+                    variant="contained"
+                    onClick={handleSubmit}>
+                    Add Todo
+                </Button>
+            </Grid>
+        </Grid>
     );
 }
 
