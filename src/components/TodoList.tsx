@@ -2,19 +2,22 @@ import React, { useContext, useState } from "react";
 import { AppContext, TodoType } from "../context/AppContext";
 import {
     Checkbox,
+    Grid,
     IconButton,
     List,
     ListItem,
-    ListItemButton,
     ListItemIcon,
     ListItemText,
+    TextField,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const TodoList = () => {
-    const { todos } = useContext(AppContext);
+    const { todos, deleteTodo, updateTodo } = useContext(AppContext);
 
     const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
+    const [editable, setEditable] = useState<TodoType | null>(null);
 
     const handleCheck = (todo: TodoType) => {
         const clickedIndex = todos.indexOf(todo);
@@ -23,33 +26,56 @@ const TodoList = () => {
         newCheckedVal[clickedIndex] = !newCheckedVal[clickedIndex];
 
         setChecked(newCheckedVal);
-    }
+    };
+
+    const isEditable = (t: TodoType): boolean => t.todo === editable?.todo;
 
     return (
         <List>
             {todos.map((t: TodoType) => {
                 return (
-                    <ListItem
-                        key={t.todo}
-                        disablePadding
-                        secondaryAction={
-                            <IconButton edge="end">
-                                <EditIcon />
-                            </IconButton>
-                        }>
-                        <ListItemIcon onClick={() => handleCheck(t)}>
-                            <Checkbox
-                                edge="start"
-                                checked={checked[(todos.indexOf(t))]}
-                                tabIndex={-1} />
-                        </ListItemIcon>
-
-                        <ListItemText>{t.todo}</ListItemText>
+                    <ListItem key={t.id} disablePadding>
+                        <Grid container alignItems="center">
+                            <Grid item xs={1}>
+                                <ListItemIcon onClick={() => handleCheck(t)}>
+                                    <Checkbox
+                                        checked={checked[todos.indexOf(t)]}
+                                        tabIndex={-1}
+                                    />
+                                </ListItemIcon>
+                            </Grid>
+                            <Grid item xs={9}>
+                                {isEditable(t) ? (
+                                    <TextField
+                                        variant="standard"
+                                        onKeyPress={(e) => {
+                                            if (e.key === "Enter") {
+                                                setEditable(null);
+                                            }
+                                        }}
+                                        onChange={(e) => {
+                                            t.todo = e.target.value;
+                                            updateTodo(t);
+                                        }}
+                                        value={t.todo}></TextField>
+                                ) : (
+                                    <ListItemText>{t.todo}</ListItemText>
+                                )}
+                            </Grid>
+                            <Grid item xs={2}>
+                                <IconButton onClick={() => setEditable(t)}>
+                                    <EditIcon />
+                                </IconButton>
+                                <IconButton onClick={() => deleteTodo(t)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </ListItem>
-                )
+                );
             })}
         </List>
-    )
-}
+    );
+};
 
 export default TodoList;
