@@ -12,6 +12,7 @@ const TodoForm = () => {
     } = useContext(AppContext);
 
     const [input, setInput] = useState("");
+    const [isEmpty, setIsEmpty] = useState(false);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInput(event.target.value);
@@ -19,12 +20,13 @@ const TodoForm = () => {
 
     const handleSubmit = () => {
         if(input) {
+            setIsEmpty(false);
             addTodo({ id: todos.length + 1, todo: input });
             // Clear the text field.
             setInput("");
         }
         else {
-            alert("Must submit a value.");
+            setIsEmpty(true);
         }
     };
 
@@ -50,10 +52,16 @@ const TodoForm = () => {
             style={{ paddingTop: 10 }}>
             <Grid item xs={10}>
                 <TextField
-                    label="New Todo"
+                    label={isEmpty ? "Error: Invalid input" : "New Todo"}
                     placeholder="Enter new todo"
                     value={input}
+                    error={isEmpty}
                     onChange={handleInputChange}
+                    onKeyPress={(e) => {
+                        if(e.key === "Enter") {
+                            handleSubmit();
+                        }
+                    }}
                     fullWidth
                     disabled={checked.includes(true)}
                 />
