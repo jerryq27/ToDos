@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AppContext, TodoType } from "../context/AppContext";
 import {
+    Box,
     Checkbox,
     Grid,
     IconButton,
@@ -9,6 +10,7 @@ import {
     ListItemIcon,
     ListItemText,
     TextField,
+    Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -35,57 +37,61 @@ const TodoList = () => {
 
     const isEditable = (t: TodoType): boolean => t.todo === editable?.todo;
 
-    return (
+    return (todos.length === 0 ?
+        <Box display="flex" justifyContent="center" padding={5}>
+            <Typography variant="h5" style={{ color: "gray" }}>
+                Add todos to see them on the list.
+            </Typography>
+        </Box>
+        :
         <List>
-            {todos.map((t: TodoType) => {
-                return (
-                    <ListItem key={t.id} disablePadding>
-                        <Grid container alignItems="center">
-                            <Grid item xs={1}>
-                                <ListItemIcon onClick={() => handleCheck(t)}>
-                                    <Checkbox
-                                        checked={checked[todos.indexOf(t)]}
-                                        tabIndex={-1}
-                                    />
-                                </ListItemIcon>
-                            </Grid>
-                            <Grid item xs={9}>
-                                {isEditable(t) ? (
-                                    <TextField
-                                        variant="standard"
-                                        fullWidth
-                                        onKeyPress={(e) => {
-                                            if(e.key === "Enter") {
-                                                setEditable(null);
-                                            }
-                                        }}
-                                        onChange={(e) => {
-                                            t.todo = e.target.value;
-                                            updateTodo(t);
-                                        }}
-                                        value={t.todo}></TextField>
-                                ) : (
-                                    <ListItemText onClick={() => setEditable(t)}>
-                                        {t.todo}
-                                    </ListItemText>
-                                )}
-                            </Grid>
-                            <Grid item xs={2}>
-                                <IconButton
-                                    onClick={() => editable ? setEditable(null) : setEditable(t)}
-                                    disabled={checked.includes(true)}>
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton
-                                    onClick={() => deleteTodo(t)}
-                                    disabled={checked.includes(true)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Grid>
+            {todos.map((t: TodoType) =>
+                <ListItem key={t.id} disablePadding>
+                    <Grid container alignItems="center">
+                        <Grid item xs={1}>
+                            <ListItemIcon onClick={() => handleCheck(t)}>
+                                <Checkbox
+                                    checked={checked[todos.indexOf(t)]}
+                                    tabIndex={-1}
+                                />
+                            </ListItemIcon>
                         </Grid>
-                    </ListItem>
-                );
-            })}
+                        <Grid item xs={9}>
+                            {isEditable(t) ? (
+                                <TextField
+                                    variant="standard"
+                                    fullWidth
+                                    onKeyPress={(e) => {
+                                        if(e.key === "Enter") {
+                                            setEditable(null);
+                                        }
+                                    }}
+                                    onChange={(e) => {
+                                        t.todo = e.target.value;
+                                        updateTodo(t);
+                                    }}
+                                    value={t.todo}></TextField>
+                            ) : (
+                                <ListItemText onClick={() => setEditable(t)}>
+                                    {t.todo}
+                                </ListItemText>
+                            )}
+                        </Grid>
+                        <Grid item xs={2}>
+                            <IconButton
+                                onClick={() => editable ? setEditable(null) : setEditable(t)}
+                                disabled={checked.includes(true)}>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton
+                                onClick={() => deleteTodo(t)}
+                                disabled={checked.includes(true)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Grid>
+                    </Grid>
+                </ListItem>
+            )}
         </List>
     );
 };
