@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AppContext, TodoType } from "../context/AppContext";
+import { AppContext, Todo } from "../context/AppContext";
 import { Button, Grid, TextField } from "@mui/material";
 
 const TodoForm = () => {
@@ -21,7 +21,7 @@ const TodoForm = () => {
     const handleSubmit = () => {
         if(input) {
             setIsEmpty(false);
-            addTodo({ id: todos.length + 1, todo: input });
+            addTodo({ id: todos.length + 1, text: input });
             // Clear the text field.
             setInput("");
         }
@@ -31,7 +31,7 @@ const TodoForm = () => {
     };
 
     const handleDelete = () => {
-        let todosToDelete: TodoType[] = [];
+        let todosToDelete: Todo[] = [];
         checked.forEach((checkedVal, checkedIndex) => {
             if(checkedVal === true) {
                 todosToDelete.push(todos[checkedIndex]);
@@ -57,8 +57,8 @@ const TodoForm = () => {
                     value={input}
                     error={isEmpty}
                     onChange={handleInputChange}
-                    onKeyPress={(e) => {
-                        if(e.key === "Enter") {
+                    onKeyPress={(event) => {
+                        if(event.key === "Enter") {
                             handleSubmit();
                         }
                     }}

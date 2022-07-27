@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { AppContext, TodoType } from "../context/AppContext";
+import { AppContext, Todo } from "../context/AppContext";
 import {
     Box,
     Checkbox,
@@ -24,9 +24,9 @@ const TodoList = () => {
         setChecked
     } = useContext(AppContext);
 
-    const [editable, setEditable] = useState<TodoType | null>(null);
+    const [editable, setEditable] = useState<Todo | null>(null);
 
-    const handleCheck = (todo: TodoType) => {
+    const handleCheck = (todo: Todo) => {
         const clickedIndex = todos.indexOf(todo);
 
         const newCheckedVal = [...checked];
@@ -35,7 +35,7 @@ const TodoList = () => {
         setChecked(newCheckedVal);
     };
 
-    const isEditable = (t: TodoType): boolean => t.todo === editable?.todo;
+    const isEditable = (todo: Todo): boolean => todo.text === editable?.text;
 
     return (todos.length === 0 ?
         <Box display="flex" justifyContent="center" padding={5}>
@@ -45,46 +45,46 @@ const TodoList = () => {
         </Box>
         :
         <List>
-            {todos.map((t: TodoType) =>
-                <ListItem key={t.id} disablePadding>
+            {todos.map((todo: Todo) =>
+                <ListItem key={todo.id} disablePadding>
                     <Grid container alignItems="center">
                         <Grid item xs={1}>
-                            <ListItemIcon onClick={() => handleCheck(t)}>
+                            <ListItemIcon onClick={() => handleCheck(todo)}>
                                 <Checkbox
-                                    checked={checked[todos.indexOf(t)]}
+                                    checked={checked[todos.indexOf(todo)]}
                                     tabIndex={-1}
                                 />
                             </ListItemIcon>
                         </Grid>
                         <Grid item xs={9}>
-                            {isEditable(t) ? (
+                            {isEditable(todo) ? (
                                 <TextField
                                     variant="standard"
                                     fullWidth
-                                    onKeyPress={(e) => {
-                                        if(e.key === "Enter") {
+                                    onKeyPress={(event) => {
+                                        if(event.key === "Enter") {
                                             setEditable(null);
                                         }
                                     }}
-                                    onChange={(e) => {
-                                        t.todo = e.target.value;
-                                        updateTodo(t);
+                                    onChange={(event) => {
+                                        todo.text = event.target.value;
+                                        updateTodo(todo);
                                     }}
-                                    value={t.todo}></TextField>
+                                    value={todo.text}></TextField>
                             ) : (
-                                <ListItemText onClick={() => setEditable(t)}>
-                                    {t.todo}
+                                <ListItemText onClick={() => setEditable(todo)}>
+                                    {todo.text}
                                 </ListItemText>
                             )}
                         </Grid>
                         <Grid item xs={2}>
                             <IconButton
-                                onClick={() => editable ? setEditable(null) : setEditable(t)}
+                                onClick={() => editable ? setEditable(null) : setEditable(todo)}
                                 disabled={checked.includes(true)}>
                                 <EditIcon />
                             </IconButton>
                             <IconButton
-                                onClick={() => deleteTodo(t)}
+                                onClick={() => deleteTodo(todo)}
                                 disabled={checked.includes(true)}>
                                 <DeleteIcon />
                             </IconButton>

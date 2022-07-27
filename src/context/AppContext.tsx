@@ -5,34 +5,34 @@ import React, {
 } from "react";
 
 export interface AppContextType {
-    todos: TodoType[];
-    addTodo: (...todo: TodoType[]) => void;
-    deleteTodo: (...todo: TodoType[]) => void;
-    updateTodo: (...todo: TodoType[]) => void;
+    todos: Todo[];
+    addTodo: (...todo: Todo[]) => void;
+    deleteTodo: (...todo: Todo[]) => void;
+    updateTodo: (...todo: Todo[]) => void;
 
     checked: boolean[];
     setChecked: (checkedVals: boolean[]) => void;
 }
-export interface TodoType {
+export interface Todo {
     id: number;
-    todo: string;
+    text: string;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
-    const [todos, setTodos] = useState<TodoType[]>([
-        { id: 1, todo: "Learn React" },
-        { id: 2, todo: "Create Todo app" },
-        { id: 3, todo: "Learn TypeScript" },
+    const [todos, setTodos] = useState<Todo[]>([
+        { id: 1, text: "Learn React" },
+        { id: 2, text: "Create Todo app" },
+        { id: 3, text: "Learn TypeScript" },
     ]);
     const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
 
-    const addTodo = (...newTodos: TodoType[]) => {
+    const addTodo = (...newTodos: Todo[]) => {
         setTodos([...todos, ...newTodos]);
     };
 
-    const deleteTodo = (...todosToDelete: TodoType[]) => {
+    const deleteTodo = (...todosToDelete: Todo[]) => {
         let newTodos = [...todos];
         todosToDelete.forEach(todo => {
             newTodos = newTodos.filter(t => t.id !== todo.id);
@@ -41,7 +41,7 @@ export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) =>
         setTodos(newTodos);
     };
 
-    const updateTodo = (...todosToUpdate: TodoType[]) => {
+    const updateTodo = (...todosToUpdate: Todo[]) => {
         let newTodos = [...todos];
 
         todosToUpdate.forEach(utodo => {
