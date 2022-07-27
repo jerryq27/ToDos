@@ -6,9 +6,9 @@ import React, {
 
 export interface AppContextType {
     todos: TodoType[];
-    addTodo: (todo: TodoType) => void;
-    deleteTodo: (todo: TodoType) => void;
-    updateTodo: (todo: TodoType) => void;
+    addTodo: (...todo: TodoType[]) => void;
+    deleteTodo: (...todo: TodoType[]) => void;
+    updateTodo: (...todo: TodoType[]) => void;
 
     checked: boolean[];
     setChecked: (checkedVals: boolean[]) => void;
@@ -28,20 +28,28 @@ export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) =>
     ]);
     const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
 
-    const addTodo = (todo: TodoType) => {
-        setTodos([...todos, todo]);
+    const addTodo = (...newTodos: TodoType[]) => {
+        setTodos([...todos, ...newTodos]);
     };
 
-    const deleteTodo = (todo: TodoType) => {
-        setTodos(todos.filter(t => t.id !== todo.id));
-    };
-
-    const updateTodo = (todo: TodoType) => {
+    const deleteTodo = (...todosToDelete: TodoType[]) => {
         let newTodos = [...todos];
-        newTodos.forEach(t => {
-            if(t.id === todo.id) {
-                t = todo;
-            }
+        todosToDelete.forEach(todo => {
+            newTodos = newTodos.filter(t => t.id !== todo.id);
+        });
+
+        setTodos(newTodos);
+    };
+
+    const updateTodo = (...todosToUpdate: TodoType[]) => {
+        let newTodos = [...todos];
+
+        todosToUpdate.forEach(utodo => {
+            newTodos.forEach(todo => {
+                if(utodo.id === todo.id) {
+                    todo = utodo;
+                }
+            });
         });
 
         setTodos(newTodos);
