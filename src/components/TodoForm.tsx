@@ -3,43 +3,45 @@ import { AppContext } from "../context/AppContext";
 import { Button, Grid, TextField } from "@mui/material";
 
 const TodoForm = () => {
-    const { addTodo } = useContext(AppContext);
+    const { todos, addTodo } = useContext(AppContext);
 
     const [input, setInput] = useState("");
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInput(event.target.value);
-    }
+    };
 
     const handleSubmit = () => {
-        if (input) {
-            addTodo({ todo: input });
+        if(input) {
+            addTodo({ id: todos.length + 1, todo: input });
             // Clear the text field.
-            setInput('');
+            setInput("");
         }
         else {
             alert("Must submit a value.");
         }
-    }
+    };
 
     return (
-        <Grid container
+        <Grid
+            container
             spacing={2}
             direction="row"
             alignItems="center"
             justifyContent="flex-end"
-            style={{ padding: 10 }}>
+            style={{ paddingTop: 10 }}>
             <Grid item xs={10}>
                 <TextField
                     label="New Todo"
                     placeholder="Enter new todo"
                     value={input}
                     onChange={handleInputChange}
-                    fullWidth />
+                    fullWidth
+                />
             </Grid>
             <Grid item xs={2}>
                 <Button
-                    style={{ margin: 'auto 0 auto' }}
+                    style={{ margin: "auto 0 auto" }}
                     variant="contained"
                     onClick={handleSubmit}>
                     Add Todo
@@ -47,6 +49,6 @@ const TodoForm = () => {
             </Grid>
         </Grid>
     );
-}
+};
 
 export default TodoForm;

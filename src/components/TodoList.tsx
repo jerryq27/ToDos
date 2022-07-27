@@ -49,7 +49,7 @@ const TodoList = () => {
                                     <TextField
                                         variant="standard"
                                         onKeyPress={(e) => {
-                                            if (e.key === "Enter") {
+                                            if(e.key === "Enter") {
                                                 setEditable(null);
                                             }
                                         }}

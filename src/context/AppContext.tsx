@@ -26,26 +26,26 @@ export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) =>
 
     const addTodo = (todo: TodoType) => {
         setTodos([...todos, todo]);
-    }
+    };
 
     const deleteTodo = (todo: TodoType) => {
         setTodos(todos.filter(t => t.id !== todo.id));
-    }
+    };
 
     const updateTodo = (todo: TodoType) => {
         let newTodos = [...todos];
         newTodos.map(t => {
-            if (t.id == todo.id) {
+            if(t.id == todo.id) {
                 t = todo;
             }
         });
 
         setTodos(newTodos);
-    }
+    };
 
     return (
         <AppContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo }}>
             {children}
         </AppContext.Provider>
     );
-}
+};
