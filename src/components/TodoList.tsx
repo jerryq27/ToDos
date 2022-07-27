@@ -14,9 +14,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const TodoList = () => {
-    const { todos, deleteTodo, updateTodo } = useContext(AppContext);
+    const {
+        todos,
+        deleteTodo,
+        updateTodo,
+        checked,
+        setChecked
+    } = useContext(AppContext);
 
-    const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
     const [editable, setEditable] = useState<TodoType | null>(null);
 
     const handleCheck = (todo: TodoType) => {
@@ -48,6 +53,7 @@ const TodoList = () => {
                                 {isEditable(t) ? (
                                     <TextField
                                         variant="standard"
+                                        fullWidth
                                         onKeyPress={(e) => {
                                             if(e.key === "Enter") {
                                                 setEditable(null);
@@ -59,11 +65,13 @@ const TodoList = () => {
                                         }}
                                         value={t.todo}></TextField>
                                 ) : (
-                                    <ListItemText>{t.todo}</ListItemText>
+                                    <ListItemText onClick={() => setEditable(t)}>
+                                        {t.todo}
+                                    </ListItemText>
                                 )}
                             </Grid>
                             <Grid item xs={2}>
-                                <IconButton onClick={() => setEditable(t)}>
+                                <IconButton onClick={() => editable ? setEditable(null) : setEditable(t)}>
                                     <EditIcon />
                                 </IconButton>
                                 <IconButton onClick={() => deleteTodo(t)}>
