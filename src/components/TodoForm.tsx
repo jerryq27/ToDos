@@ -1,9 +1,15 @@
 import React, { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { AppContext, TodoType } from "../context/AppContext";
 import { Button, Grid, TextField } from "@mui/material";
 
 const TodoForm = () => {
-    const { todos, addTodo } = useContext(AppContext);
+    const {
+        todos,
+        addTodo,
+        deleteTodo,
+        checked,
+        setChecked
+    } = useContext(AppContext);
 
     const [input, setInput] = useState("");
 
@@ -22,6 +28,18 @@ const TodoForm = () => {
         }
     };
 
+    const handleDelete = () => {
+        let todosToDelete: TodoType[] = [];
+        checked.forEach((checkedVal, checkedIndex) => {
+            if(checkedVal === true) {
+                todosToDelete.push(todos[checkedIndex]);
+            }
+        });
+
+        deleteTodo(...todosToDelete);
+        setChecked(Array(todos.length).fill(false));
+    };
+
     return (
         <Grid
             container
@@ -37,15 +55,26 @@ const TodoForm = () => {
                     value={input}
                     onChange={handleInputChange}
                     fullWidth
+                    disabled={checked.includes(true)}
                 />
             </Grid>
             <Grid item xs={2}>
-                <Button
-                    style={{ margin: "auto 0 auto" }}
-                    variant="contained"
-                    onClick={handleSubmit}>
-                    Add Todo
-                </Button>
+                {checked.includes(true) ?
+                    <Button
+                        style={{ margin: "auto 0 auto" }}
+                        variant="contained"
+                        color="error"
+                        onClick={handleDelete}>
+                        Delete
+                    </Button>
+                    :
+                    <Button
+                        style={{ margin: "auto 0 auto" }}
+                        variant="contained"
+                        onClick={handleSubmit}>
+                        Add Todo
+                    </Button>
+                }
             </Grid>
         </Grid>
     );
