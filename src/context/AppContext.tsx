@@ -34,8 +34,8 @@ export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) =>
 
     const updateTodo = (todo: TodoType) => {
         let newTodos = [...todos];
-        newTodos.map(t => {
-            if(t.id == todo.id) {
+        newTodos.forEach(t => {
+            if(t.id === todo.id) {
                 t = todo;
             }
         });
