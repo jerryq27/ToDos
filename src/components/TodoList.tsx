@@ -71,10 +71,14 @@ const TodoList = () => {
                                 )}
                             </Grid>
                             <Grid item xs={2}>
-                                <IconButton onClick={() => editable ? setEditable(null) : setEditable(t)}>
+                                <IconButton
+                                    onClick={() => editable ? setEditable(null) : setEditable(t)}
+                                    disabled={checked.includes(true)}>
                                     <EditIcon />
                                 </IconButton>
-                                <IconButton onClick={() => deleteTodo(t)}>
+                                <IconButton
+                                    onClick={() => deleteTodo(t)}
+                                    disabled={checked.includes(true)}>
                                     <DeleteIcon />
                                 </IconButton>
                             </Grid>
