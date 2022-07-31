@@ -1,14 +1,12 @@
 import React, { useContext, useState } from "react";
-import { AppContext, Todo } from "../context/AppContext";
+import { AppContext } from "../context/AppContext";
 import { Button, Grid, TextField } from "@mui/material";
 
 const TodoForm = () => {
     const {
         todos,
         addTodo,
-        deleteTodo,
         checked,
-        setChecked
     } = useContext(AppContext);
 
     const [input, setInput] = useState("");
@@ -28,18 +26,6 @@ const TodoForm = () => {
         else {
             setIsEmpty(true);
         }
-    };
-
-    const handleDelete = () => {
-        let todosToDelete: Todo[] = [];
-        checked.forEach((checkedVal, checkedIndex) => {
-            if(checkedVal === true) {
-                todosToDelete.push(todos[checkedIndex]);
-            }
-        });
-
-        deleteTodo(...todosToDelete);
-        setChecked(Array(todos.length).fill(false));
     };
 
     return (
@@ -67,22 +53,12 @@ const TodoForm = () => {
                 />
             </Grid>
             <Grid item xs={2}>
-                {checked.includes(true) ?
-                    <Button
-                        style={{ margin: "auto 0 auto" }}
-                        variant="contained"
-                        color="error"
-                        onClick={handleDelete}>
-                        Delete
-                    </Button>
-                    :
-                    <Button
-                        style={{ margin: "auto 0 auto" }}
-                        variant="contained"
-                        onClick={handleSubmit}>
-                        Add Todo
-                    </Button>
-                }
+                <Button
+                    style={{ margin: "auto 0 auto" }}
+                    variant="contained"
+                    onClick={handleSubmit}>
+                    Add Todo
+                </Button>
             </Grid>
         </Grid>
     );

@@ -37,6 +37,11 @@ const TodoList = () => {
 
     const isEditable = (todo: Todo): boolean => todo.text === editable?.text;
 
+    const checkedStyle = {
+        textDecoration: "line-through",
+        color: "gray",
+    };
+
     return (todos.length === 0 ?
         <Box display="flex" justifyContent="center" padding={5}>
             <Typography variant="h5" style={{ color: "gray" }}>
@@ -72,7 +77,9 @@ const TodoList = () => {
                                     }}
                                     value={todo.text}></TextField>
                             ) : (
-                                <ListItemText onClick={() => setEditable(todo)}>
+                                <ListItemText
+                                    onClick={() => setEditable(todo)}
+                                    style={checked[todos.indexOf(todo)] ? checkedStyle : {}}>
                                     {todo.text}
                                 </ListItemText>
                             )}
@@ -80,12 +87,10 @@ const TodoList = () => {
                         <Grid item xs={2}>
                             <IconButton
                                 onClick={() => editable ? setEditable(null) : setEditable(todo)}
-                                disabled={checked.includes(true)}>
+                                disabled={checked[todos.indexOf(todo)]}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton
-                                onClick={() => deleteTodo(todo)}
-                                disabled={checked.includes(true)}>
+                            <IconButton onClick={() => deleteTodo(todo)}>
                                 <DeleteIcon />
                             </IconButton>
                         </Grid>
