@@ -66,6 +66,8 @@ const TodoList = () => {
                                 <TextField
                                     variant="standard"
                                     fullWidth
+                                    autoFocus
+                                    onBlur={() => setEditable(null)}
                                     onKeyPress={(event) => {
                                         if(event.key === "Enter") {
                                             setEditable(null);
@@ -78,7 +80,11 @@ const TodoList = () => {
                                     value={todo.text}></TextField>
                             ) : (
                                 <ListItemText
-                                    onClick={() => setEditable(todo)}
+                                    onClick={() => {
+                                        if(!checked[todos.indexOf(todo)]) {
+                                            setEditable(todo);
+                                        }
+                                    }}
                                     style={checked[todos.indexOf(todo)] ? checkedStyle : {}}>
                                     {todo.text}
                                 </ListItemText>
