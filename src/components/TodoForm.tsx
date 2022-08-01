@@ -19,7 +19,7 @@ const TodoForm = () => {
         if(input) {
             setIsEmpty(false);
             addTodo({
-                id: todos.length + 1,
+                id: todos[todos.length - 1].id + 1,
                 text: input,
                 done: false
             });
