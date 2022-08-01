@@ -6,7 +6,6 @@ const TodoForm = () => {
     const {
         todos,
         addTodo,
-        checked,
     } = useContext(AppContext);
 
     const [input, setInput] = useState("");
@@ -19,7 +18,11 @@ const TodoForm = () => {
     const handleSubmit = () => {
         if(input) {
             setIsEmpty(false);
-            addTodo({ id: todos.length + 1, text: input });
+            addTodo({
+                id: todos.length + 1,
+                text: input,
+                done: false
+            });
             // Clear the text field.
             setInput("");
         }
@@ -38,8 +41,9 @@ const TodoForm = () => {
             style={{ paddingTop: 10 }}>
             <Grid item xs={10}>
                 <TextField
-                    label={isEmpty ? "Error: Invalid input" : "New Todo"}
+                    fullWidth
                     placeholder="Enter new todo"
+                    label={isEmpty ? "Error: Invalid input" : "New Todo"}
                     value={input}
                     error={isEmpty}
                     onChange={handleInputChange}
@@ -48,8 +52,6 @@ const TodoForm = () => {
                             handleSubmit();
                         }
                     }}
-                    fullWidth
-                    disabled={checked.includes(true)}
                 />
             </Grid>
             <Grid item xs={2}>

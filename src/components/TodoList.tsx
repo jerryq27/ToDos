@@ -20,19 +20,13 @@ const TodoList = () => {
         todos,
         deleteTodo,
         updateTodo,
-        checked,
-        setChecked
     } = useContext(AppContext);
 
     const [editable, setEditable] = useState<Todo | null>(null);
 
     const handleCheck = (todo: Todo) => {
-        const clickedIndex = todos.indexOf(todo);
-
-        const newCheckedVal = [...checked];
-        newCheckedVal[clickedIndex] = !newCheckedVal[clickedIndex];
-
-        setChecked(newCheckedVal);
+        todo.done = !todo.done;
+        updateTodo(todo);
     };
 
     const isEditable = (todo: Todo): boolean => todo.text === editable?.text;
@@ -56,7 +50,7 @@ const TodoList = () => {
                         <Grid item xs={1}>
                             <ListItemIcon onClick={() => handleCheck(todo)}>
                                 <Checkbox
-                                    checked={checked[todos.indexOf(todo)]}
+                                    checked={todo.done}
                                     tabIndex={-1}
                                 />
                             </ListItemIcon>
@@ -81,11 +75,11 @@ const TodoList = () => {
                             ) : (
                                 <ListItemText
                                     onClick={() => {
-                                        if(!checked[todos.indexOf(todo)]) {
+                                        if(!todo.done) {
                                             setEditable(todo);
                                         }
                                     }}
-                                    style={checked[todos.indexOf(todo)] ? checkedStyle : {}}>
+                                    style={todo.done ? checkedStyle : {}}>
                                     {todo.text}
                                 </ListItemText>
                             )}
@@ -93,7 +87,7 @@ const TodoList = () => {
                         <Grid item xs={2}>
                             <IconButton
                                 onClick={() => editable ? setEditable(null) : setEditable(todo)}
-                                disabled={checked[todos.indexOf(todo)]}>
+                                disabled={todo.done}>
                                 <EditIcon />
                             </IconButton>
                             <IconButton onClick={() => deleteTodo(todo)}>

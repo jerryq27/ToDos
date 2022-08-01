@@ -9,24 +9,21 @@ export interface AppContextType {
     addTodo: (...todo: Todo[]) => void;
     deleteTodo: (...todo: Todo[]) => void;
     updateTodo: (...todo: Todo[]) => void;
-
-    checked: boolean[];
-    setChecked: (checkedVals: boolean[]) => void;
 }
 export interface Todo {
     id: number;
     text: string;
+    done: boolean;
 }
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const [todos, setTodos] = useState<Todo[]>([
-        { id: 1, text: "Learn React" },
-        { id: 2, text: "Create Todo app" },
-        { id: 3, text: "Learn TypeScript" },
+        { id: 1, text: "Learn React", done: false },
+        { id: 2, text: "Create Todo app", done: false },
+        { id: 3, text: "Learn TypeScript", done: false },
     ]);
-    const [checked, setChecked] = useState<boolean[]>(Array(3).fill(false));
 
     const addTodo = (...newTodos: Todo[]) => {
         setTodos([...todos, ...newTodos]);
@@ -56,7 +53,7 @@ export const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) =>
     };
 
     return (
-        <AppContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo, checked, setChecked }}>
+        <AppContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo }}>
             {children}
         </AppContext.Provider>
     );
